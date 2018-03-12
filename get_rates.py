@@ -9,8 +9,12 @@ moex_date_mask = "%Y-%m-%d"
 cbr_date_mask = "%d/%m/%Y"
 
 today = date.today()
-last_monday = date.today() - timedelta(weeks=1, days=today.isoweekday() - 1)
+last_monday = today - timedelta(weeks=1, days=today.isoweekday() - 1)
 last_sunday = last_monday + timedelta(weeks=1, days=-1)
+
+val_RUABITR_close = None
+val_MCFTRR_close = None
+val_USD_rate = None
 
 get_RUABITR_url = f"http://iss.moex.com/iss/history/engines/stock/markets/index/boards/RTSI/securities/RUABITR.json?from={last_monday}&till={last_sunday}"
 response = requests.get(get_RUABITR_url).json()
@@ -50,5 +54,5 @@ for record in USD_rate_collection.findall('Record'):
 
 print(f"Данные на {date.strftime(cbr_date_mask)}")
 print(f"Курс рубля к доллару: {val_USD_rate} Р")
-print(f"Индекс MCFTRR: {val_MCFTRR_close}")
-print(f"Индекс RUABITR: {val_RUABITR_close}")
+print(f"Индекс MCFTRR: {val_MCFTRR_close}".replace(".", ","))
+print(f"Индекс RUABITR: {val_RUABITR_close}".replace(".", ","))
